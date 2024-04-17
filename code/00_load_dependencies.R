@@ -5,7 +5,12 @@
 #' 
 #' IF YOU DO NOT WANT TO INSTALL ANY OF THESE PACKAGES, DO NOT RUN THIS CODE.
 
-list.of.packages <- c("tidyverse", "janitor")
+list.of.packages <- c(
+  "data.table", "httr", "glue", "sf", "arrow",
+  "smoothr", "janitor", "lubridate", "cowplot", "leaflet", "leaflet.extras",
+  "gtable", "gtExtras", "gt",
+  "tidyverse", "ggpubr", "councilverse"
+  )
 
 # checks if packages has been previously installed
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
@@ -16,11 +21,13 @@ councilverse.check <- "councilverse" %in% installed.packages()[,"Package"]
 if(length(new.packages)) install.packages(new.packages)
 #if(councildown.check == FALSE) remotes::install_github("newyorkcitycouncil/councildown")
 if(councilverse.check == FALSE) remotes::install_github("newyorkcitycouncil/councilverse")
-  
+
 # packages are loaded
 lapply(c(list.of.packages,"councilverse"), require, character.only = TRUE)
 
 # remove created variables for packages
 rm(list.of.packages,new.packages,councilverse.check)
 
-## Functions -----------------------------------------------
+CRS <- 4326
+
+
