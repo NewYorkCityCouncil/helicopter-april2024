@@ -54,7 +54,7 @@ tag.map.title <- tags$style(HTML("
 "))
 
 title <- tags$div(
-  tag.map.title, HTML("Helicopter Flights (May 15, 2023) and</br>311 Helicopter Noise Complaints (May 2023)")
+  tag.map.title, HTML("May 2023 Helicopter Flights and</br>311 Helicopter Noise Complaints")
 )  
 
 geo = sf::st_sfc(sf::st_point(c(-73.7, 40.525)))
@@ -69,7 +69,7 @@ twitter_map <- leaflet(options = leafletOptions(minZoom = 10, maxZoom = 15)) %>%
                        opacity = 0.8,
                        color = "#666666") %>%
   addCircleMarkers(data=heli_noise, 
-                   opacity = 0.05, color = "red", stroke = F, radius = 2, fill = T) %>%
+                   opacity = 0.02, color = "red", stroke = F, radius = 2, fill = T) %>%
   addPolylines(data=flights, opacity = 0.03, color = "#2F56A6") %>%
   addControl(title, position = "topleft", className="map-title") %>%
   leaflet::addLabelOnlyMarkers(data = source_notes_geo,

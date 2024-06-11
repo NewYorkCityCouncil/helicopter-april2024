@@ -6,7 +6,7 @@
 source("code/analysis/01_wrangle_flights.R")
 
 # Map --------------------------------------------------
-# map all heliports (sample or full)
+# map all heliports 
 map_heliports <- leaflet(options = leafletOptions(minZoom = 9, maxZoom = 15))%>%
   setView(-73.999,40.698103, zoom=11) %>% 
   addProviderTiles('CartoDB.Positron') %>%
@@ -26,7 +26,7 @@ councildown::mapshot(map_heliports, file = "visuals/all_flights/heliports.png",
 htmlwidgets::saveWidget(map_heliports, file="visuals/all_flights/heliports.html", selfcontained = T)
 
 
-# map all flights (sample or full)
+# map all flights (full)
 map_all_flights <- leaflet(options = leafletOptions(minZoom = 10, maxZoom = 15))%>%
   setView(-73.999,40.704103, zoom=11) %>% 
   addProviderTiles('CartoDB.Positron') %>%
@@ -34,7 +34,7 @@ map_all_flights <- leaflet(options = leafletOptions(minZoom = 10, maxZoom = 15))
                        fill = FALSE,
                        opacity = 0.8,
                        color = "#666666") %>%
-  addPolylines(data=flights, opacity = 0.03, color = "#2F56A6")
+  addPolylines(data=flights, opacity = 0.015, color = "#2F56A6")
 
 councildown::mapshot(map_all_flights, file = "visuals/all_flights/all_flights.png", 
                      vwidth = 900, vheight = 870)
@@ -76,17 +76,17 @@ flights %>%
   adorn_totals()
 
 # map each heliport - (flight_df, heliport_name, sample_frac)
-flight_by_heliport_map(flights, "Downtown Manhattan Heliport", 1)
-flight_by_heliport_map(flights, "Kearny, NJ", 1)
-flight_by_heliport_map(flights, "West 30th Street Heliport", 1)
-flight_by_heliport_map(flights, "Linden Airport", 1)
-flight_by_heliport_map(flights, "East 34th Street Heliport", 1)
-flight_by_heliport_map(flights, "JFK Airport", 1)
-flight_by_heliport_map(flights, "NYPD Floyd Bennett Field", 1)
-flight_by_heliport_map(flights, "Teterboro Airport", 1)
-flight_by_heliport_map(flights, "Essex County Airport", 1)
-flight_by_heliport_map(flights, "Newark Airport", 1)
-flight_by_heliport_map(flights, "LaGuardia Airport", 1)
+flight_by_heliport_map(flights, "Downtown Manhattan Heliport", 0.1)
+flight_by_heliport_map(flights, "Kearny, NJ", 0.1)
+flight_by_heliport_map(flights, "West 30th Street Heliport", 0.1)
+flight_by_heliport_map(flights, "Linden Airport", 0.1)
+flight_by_heliport_map(flights, "East 34th Street Heliport", 0.1)
+flight_by_heliport_map(flights, "JFK Airport", 0.1)
+flight_by_heliport_map(flights, "NYPD Floyd Bennett Field", 0.1)
+flight_by_heliport_map(flights, "Teterboro Airport", 0.1)
+flight_by_heliport_map(flights, "Essex County Airport", 0.1)
+flight_by_heliport_map(flights, "Newark Airport", 0.1)
+flight_by_heliport_map(flights, "LaGuardia Airport", 0.1)
 
 # NA flights
 leaflet(options = leafletOptions(minZoom = 10, maxZoom = 15)) %>%

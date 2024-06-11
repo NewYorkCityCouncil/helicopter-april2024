@@ -111,7 +111,7 @@ t3 <- flights %>%
     prop = round(num_flights / nrow(flights), 2)
   ) %>%
   arrange(desc(num_flights)) %>% 
-  head(8) %>%
+  head(7) %>%
   rename(
     `Start Location` = flight_start,
     `Flight Type` = flight_type,
