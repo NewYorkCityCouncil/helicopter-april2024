@@ -18,14 +18,14 @@ raw <- vroom::vroom(url)
 heli_noise <- raw %>%
   filter(!is.na(latitude), 
          !is.na(longitude), 
-         created_date >= as.Date("2023-05-01") & created_date < as.Date("2023-06-01")) %>%
+         created_date >= as.Date("2023-05-15") & created_date < as.Date("2023-05-16")) %>%
   st_as_sf(coords = c("longitude", "latitude"), 
            crs = 4326)
 
 heli_noise_df <- raw %>%
   filter(!is.na(latitude), 
          !is.na(longitude), 
-         created_date >= as.Date("2023-05-01") & created_date < as.Date("2023-06-01"))
+         created_date >= as.Date("2023-05-15") & created_date < as.Date("2023-05-16"))
 
 # create buffer around each 311 complaints 
 noise_buffer <- heli_noise %>%
@@ -150,7 +150,7 @@ flight_complaints_path <- flights %>%
 t1 <- flight_complaints %>%
   ungroup() %>%
   select(flight_start, flight_type, num_flights, n, complaints_per_flight) %>% 
-  filter(num_flights > 50) %>%
+  filter(num_flights > 10) %>%
   arrange(desc(complaints_per_flight)) %>%
   mutate(complaints_per_flight = round(complaints_per_flight, 2)) %>%
   rename(
@@ -175,7 +175,7 @@ t1 %>% gtsave("visuals/311_flights_together/311_flights_together.html")
 t2 <- flight_complaints_path %>%
   ungroup() %>%
   select(flight_path, flight_type, num_flights, n, complaints_per_flight) %>% 
-  filter(num_flights > 50, n > 1) %>%
+  filter(num_flights > 5, n > 1) %>%
   arrange(desc(complaints_per_flight)) %>%
   mutate(complaints_per_flight = round(complaints_per_flight, 2)) %>%
   rename(
@@ -284,7 +284,7 @@ leaflet(options = leafletOptions(minZoom = 10, maxZoom = 15))%>%
                    opacity = 0.1, color = "#2F56A6", radius = 1, fill = FALSE)
 
 # Explore specific flight path
-flight_path_selected <- closest_flight %>% filter(flight_path == "West 30th Street Heliport - West 30th Street Heliport") %>% st_drop_geometry() %>% pull(flight_id) %>% unique() 
+flight_path_selected <- closest_flight %>% filter(flight_path == "JFK Airport - JFK Airport") %>% st_drop_geometry() %>% pull(flight_id) %>% unique() 
 p <- flights %>% filter(flight_id %in% flight_path_selected)
 
 
@@ -297,4 +297,3 @@ leaflet()%>%
               color = "black") %>%
   addPolylines(data=p, 
                    opacity = 0.1, color = "#2F56A6")
-

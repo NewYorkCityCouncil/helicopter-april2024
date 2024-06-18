@@ -4,20 +4,22 @@ source("code/01_clean_helicopters.R")
 
 output_path <- glue("data/output")
 
-# May, 2023
+# Monday, May 15, 2023
 # csvs are not available for public use. Contact FlightRadar24 to purchase historical flight data. 
-input_dir <- glue("data/input/")
-flight_points_dir <- glue("{input_dir}/fr_may23")
-flight_points_df <- read_all_csv(flight_points_dir) %>%
-  # some rows are repeated (maybe listed on multiple dats )
-  unique()
+flights_df <- read_csv("data/input/flightradar24/20230515_flights.csv", col_types = cols(.default = "c"))
 
-positions_dirs <- list.dirs(path = "data/input/fr_may23", full.names = TRUE, recursive = F) 
-all_positions_list <- lapply(positions_dirs, get_positions_csv)
-all_positions_df <- bind_rows(all_positions_list)
+positions_df <- list.files(path = "data/input/flightradar24/20230515_positions",
+                        pattern = "\\.csv$",
+                        full.names = TRUE) %>% 
+  set_names() %>% 
+  map_dfr(~read_csv(., col_types = cols(.default = "c")), .id = "file_name") %>%
+  mutate(
+    flight_id = str_replace(str_extract(string = file_name, pattern = "[^_]+$"), ".csv", ""), 
+    date = str_replace(str_extract(string = file_name, pattern = "[^/]+$"), "_[0-9]+.csv", "")
+  )
 
-merged_df <- all_positions_df %>%
-  left_join(flight_points_df, by = "flight_id") %>%
+merged_df <- positions_df %>%
+  left_join(flights_df, by = "flight_id") %>%
   mutate(datetime = as.POSIXct(as.numeric(snapshot_id), tz = "UTC",
                                origin = "1970-01-01"))
 

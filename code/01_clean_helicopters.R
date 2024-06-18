@@ -610,7 +610,7 @@ clean_helis <- function(
         secs_in_heliport > HELIPORT_DURATION_THRESHOLD_SEC & 
           # NOTE: CHANGED FROM > to >= (likely needed b/c alt_ft is trimmed at 0)
           # max_alt_change >= LANDING_ALT_REQ_MINMAX_DIFF
-          alt_ft <= 100
+          alt_ft == 0
       ) &
         transmission_start_timestamp != enter_heliport_timestamp &
         transmission_end_timestamp != exit_heliport_timestamp
